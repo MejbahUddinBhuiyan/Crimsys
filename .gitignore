@@ -1,0 +1,35 @@
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# Dependencies
+vendor/
+node_modules/
+
+# Cache and temporary files
+tmp/
+cache/
+*.tmp
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads (but keep the directory)
+uploads/*
+!uploads/.gitkeep
+
+# Images
+img/cops/*
+img/criminals/*
+!img/cops/.gitkeep
+!img/criminals/.gitkeep

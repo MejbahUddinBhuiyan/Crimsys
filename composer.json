@@ -1,0 +1,12 @@
+{
+  "name": "crimsys/criminal-database",
+  "description": "Criminal Database Management System for Law Enforcement",
+  "type": "project",
+  "require": {
+    "php": "^7.4|^8.0"
+  },
+  "require-dev": {},
+  "scripts": {
+    "start": "php -S localhost:8000"
+  }
+}
