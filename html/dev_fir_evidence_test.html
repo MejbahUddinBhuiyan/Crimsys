@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Test FIR Evidence Upload</title></head>
+<body style="font-family:system-ui;margin:2rem">
+  <h2>Test FIR Evidence Upload</h2>
+  <form action="/Crimsys/api/cop/fir_evidence_upload.php" method="post" enctype="multipart/form-data">
+    <div>
+      <label>FirID: <input name="firId" value="11" required></label>
+    </div>
+    <div>
+      <label>Caption: <input name="caption" value="Test photo"></label>
+    </div>
+    <div>
+      <label>File: <input type="file" name="file" required></label>
+    </div>
+    <div style="margin-top:1rem;">
+      <button type="submit">Upload</button>
+    </div>
+  </form>
+</body>
+</html>

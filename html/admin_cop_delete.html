@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Admin • Delete Cop – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+  <style>
+    .glass-card{
+      width:100%; max-width:980px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(12px) saturate(140%);
+      -webkit-backdrop-filter:blur(12px) saturate(140%);
+      border-radius:16px; box-shadow:0 18px 40px rgba(0,0,0,.35);
+    }
+    .alert-banner{
+      width:100%; max-width:980px;
+      margin: 0 auto 12px;
+      text-align:center;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(225,29,72,.35);
+      color: #fff;
+      border-radius: 12px;
+      padding: .7rem 1rem;
+    }
+    /* Center the whole profile section and make photo a bit bigger */
+    #profileBlock{ max-width:780px; margin: 0 auto; }
+    .profile-photo{
+      width:140px;height:140px;object-fit:cover;border-radius:12px;
+      border:1px solid rgba(255,255,255,.25);
+      background:#0f0f12;
+    }
+    .mini-title{ font-weight:700; color:#fff; }
+    .mini-data{ color:#ddd; }
+
+    /* ====== Glass Confirm ====== */
+    .glass-modal{
+      position: fixed; inset: 0;
+      display: none;                        /* shown by JS */
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      z-index: 2000;
+    }
+    .glass-modal .glass-box{
+      width:100%; max-width:430px;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:16px;
+      box-shadow:0 18px 40px rgba(0,0,0,.35);
+      padding:20px 22px;
+    }
+    .glass-modal .msg{ font-size:1.05rem; color:#fff; }
+  </style>
+</head>
+<body class="radish-black-bg">
+
+  <!-- Topbar (Back | CRIMSYS | Logout) -->
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/admin_home.html">← Back</a>
+      </div>
+      <div class="pos-center">
+        <a class="brand-logo" href="/Crimsys/html/admin_home.html">CRIMSYS</a>
+      </div>
+      <div class="pos-right">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/api/admin_logout.php?go=/Crimsys/index.php">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <!-- banner -->
+    <div id="msg" class="alert-banner d-none"></div>
+
+    <div class="glass-card p-4 p-md-5 mx-auto">
+      <h3 class="text-white text-center mb-4">Delete Cop Profile</h3>
+
+      <!-- Search row -->
+      <form id="searchForm" class="row g-3 align-items-end" novalidate>
+        <div class="col-md-6">
+          <label class="form-label text-white-50">Cop ID</label>
+          <input id="copid" class="form-control" inputmode="numeric" minlength="8" maxlength="8" pattern="[0-9]{8}" placeholder="8 digits" required>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-accent w-100">Load</button>
+        </div>
+      </form>
+
+      <!-- Profile preview -->
+      <div id="profileBlock" class="mt-4 d-none">
+        <div class="d-flex align-items-center gap-3">
+          <img id="p_photo" class="profile-photo" src="/Crimsys/img/cops/_placeholder.png" alt="Cop Photo">
+          <div class="flex-grow-1">
+            <div class="mini-title text-uppercase fs-5" id="p_name">—</div>
+            <div class="mini-data">ID : <span id="p_id">—</span> • Rank : <span id="p_rank">—</span></div>
+            <div class="mini-data" id="p_misc">—</div>
+          </div>
+        </div>
+
+        <hr class="border-secondary">
+
+        <div class="text-white-50">
+          <div><span class="mini-title">Email:</span> <span id="p_email" class="mini-data">—</span></div>
+          <div><span class="mini-title">Phone:</span> <span id="p_contact" class="mini-data">—</span></div>
+          <div><span class="mini-title">Station:</span> <span id="p_station" class="mini-data">—</span></div>
+          <div><span class="mini-title">Present Address:</span> <span id="p_present" class="mini-data">—</span></div>
+          <div><span class="mini-title">Permanent Address:</span> <span id="p_perm" class="mini-data">—</span></div>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+          <button id="btnDelete" class="btn btn-outline-accent">Delete Profile</button>
+          <a class="btn btn-outline-accent" href="/Crimsys/html/admin_home.html">Done</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Glass Confirm Modal -->
+  <div id="glassConfirm" class="glass-modal" aria-hidden="true">
+    <div class="glass-box">
+      <div class="msg text-white mb-3">
+        Are you sure you want to delete this cop profile?
+      </div>
+      <div class="d-flex gap-2 justify-content-end">
+        <button type="button" class="btn btn-outline-accent btn-cancel">Cancel</button>
+        <button type="button" class="btn btn-outline-accent btn-ok">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/Crimsys/js/admin_cop_delete.js"></script>
+</body>
+</html>

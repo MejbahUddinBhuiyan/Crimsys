@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>My Profile – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+  <style>
+    /* Main glass card */
+    .profile-card{
+      max-width:980px; margin:0 auto;
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border-radius:16px; box-shadow:0 18px 40px rgba(0,0,0,.35);
+      padding:24px;
+    }
+    .profile-photo{
+      width:120px; height:120px; border-radius:12px; object-fit:cover;
+      border:1px solid rgba(255,255,255,.25); background:#0f0f12;
+    }
+    .profile-name{
+      color:#fff; font-weight:800; text-transform:uppercase; letter-spacing:.06em;
+    }
+    .meta{ color:#ccc; }
+    .sep-line{ border-color: rgba(255,255,255,.18); }
+
+    /* Two sub panels for actions */
+    .glass-panel{
+      background: linear-gradient(160deg, rgba(46,72,124,.22), rgba(15,15,20,.35));
+      border:1px solid rgba(100,180,255,.22);
+      border-radius:14px; padding:16px 18px;
+      box-shadow:0 14px 30px rgba(0,60,120,.25);
+      color:#e9f1ff;
+    }
+    .preview{
+      width:140px; height:140px; border-radius:12px; object-fit:cover;
+      border:1px solid rgba(255,255,255,.20); background:#0a0b10;
+    }
+    .alert-banner{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(225,29,72,.35);
+      border-radius: 12px; text-align:center; color:#fff;
+      padding:.7rem 1rem; margin: 0 0 14px 0;
+    }
+    .alert-success-banner{ border-color: rgba(16,185,129,.45); }
+    .alert-danger-banner { border-color: rgba(225,29,72,.45); }
+  </style>
+</head>
+<body class="radish-black-bg">
+
+  <!-- Topbar -->
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/cop_home.html">← Back</a>
+      </div>
+      <div class="pos-center"></div>
+      <div class="pos-right">
+        <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div id="msg" class="alert-banner d-none"></div>
+
+    <div class="profile-card">
+      <!-- Header -->
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <img id="p_photo" class="profile-photo" src="/Crimsys/img/cops/_placeholder.png" alt="Photo">
+        <div>
+          <h4 class="profile-name mb-1" id="p_name">—</h4>
+          <div class="meta">
+            ID: <span id="p_id">—</span> • Rank: <span id="p_rank">—</span> • Badge: <span id="p_badge">—</span>
+          </div>
+          <div class="meta">Station: <span id="p_station">—</span></div>
+          <div class="meta">Phone : <span id="p_phone">—</span> • Email: <span id="p_email">—</span></div>
+        </div>
+      </div>
+      <hr class="sep-line">
+
+      <!-- Actions: Change Photo + Change Password -->
+      <div class="row g-3">
+        <!-- Change Photo -->
+        <div class="col-md-6">
+          <div class="glass-panel h-100">
+            <h6 class="mb-2">Update Photo</h6>
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <img id="prevImg" class="preview" src="/Crimsys/img/cops/_placeholder.png" alt="Preview">
+              <div class="flex-grow-1">
+                <input id="photoFile" type="file" accept="image/*" capture="environment" class="form-control">
+                <small class="text-white-50">Choose or capture a new photo.</small>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="btnSavePhoto" class="btn btn-accent">Save Photo</button>
+              <button id="btnResetPhoto" class="btn btn-outline-accent">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Change Password -->
+        <div class="col-md-6">
+          <div class="glass-panel h-100">
+            <h6 class="mb-2">Change Password</h6>
+            <div class="mb-2">
+              <label class="form-label">New password</label>
+              <input id="newpass" type="password" class="form-control" placeholder="Min 6 characters">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Confirm password</label>
+              <input id="confpass" type="password" class="form-control">
+            </div>
+            <div class="d-flex gap-2">
+              <button id="btnSavePwd" class="btn btn-accent">Update Password</button>
+              <button id="btnResetPwd" class="btn btn-outline-accent">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mt-3">
+        <a class="btn btn-outline-accent" href="/Crimsys/html/cop_home.html">Done</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Separate JS for this page -->
+  <script src="/Crimsys/js/cop_profile.js"></script>
+</body>
+</html>

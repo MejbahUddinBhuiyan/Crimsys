@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Admin • Suspend / Unsuspend – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+  <style>
+    .glass-card{
+      width:100%; max-width:980px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(12px) saturate(140%);
+      -webkit-backdrop-filter:blur(12px) saturate(140%);
+      border-radius:16px; box-shadow:0 18px 40px rgba(0,0,0,.35);
+    }
+    .alert-banner{
+      width:100%; max-width:980px;
+      margin: 0 auto 12px;
+      text-align:center;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(225,29,72,.35);
+      color: #fff;
+      border-radius: 12px;
+      padding: .7rem 1rem;
+    }
+    .profile-photo{
+      width:120px;height:120px;object-fit:cover;border-radius:12px;
+      border:1px solid rgba(255,255,255,.25);
+      background:#0f0f12;
+    }
+    .mini-title{ font-weight:700; color:#fff; }
+    .mini-data{ color:#ddd; }
+    .status-pill{
+      padding:.2rem .55rem; border-radius:999px; font-weight:700; font-size:.85rem;
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .pill-green{ background:rgba(16,185,129,.16); color:#8CF4C2; border-color:rgba(16,185,129,.35); }
+    .pill-red  { background:rgba(225,29,72,.16);  color:#FF98AF; border-color:rgba(225,29,72,.35); }
+  </style>
+</head>
+<body class="radish-black-bg">
+
+  <!-- Topbar -->
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/admin_home.html">← Back</a>
+      </div>
+      <div class="pos-center">
+        <a class="brand-logo" href="/Crimsys/html/admin_home.html">CRIMSYS</a>
+      </div>
+      <div class="pos-right">
+        <a class="btn btn-outline-accent btn-sm"
+           href="/Crimsys/api/admin_logout.php?go=/Crimsys/index.php">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div id="msg" class="alert-banner d-none"></div>
+
+    <div class="glass-card p-4 p-md-5 mx-auto">
+      <h3 class="text-white text-center mb-4">Suspend / Unsuspend</h3>
+
+      <!-- Load by ID -->
+      <form id="searchForm" class="row g-3 align-items-end" novalidate>
+        <div class="col-md-6">
+          <label class="form-label text-white-50">Cop ID</label>
+          <input id="copid" class="form-control" inputmode="numeric"
+                 minlength="8" maxlength="8" pattern="[0-9]{8}" placeholder="8 digits" required>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-accent w-100">Load</button>
+        </div>
+      </form>
+
+      <!-- Profile + actions -->
+      <div id="suspendBlock" class="mt-4 d-none">
+
+        <!-- preview -->
+        <div class="d-flex align-items-center justify-content-between gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <img id="p_photo" class="profile-photo" src="/Crimsys/img/cops/_placeholder.png" alt="Cop Photo">
+            <div class="flex-grow-1">
+              <div class="mini-title text-uppercase fs-5" id="p_name">—</div>
+              <div class="mini-data">
+                ID : <span id="p_id">—</span> • Rank : <span id="p_rank">—</span> • Badge : <span id="p_badge">—</span>
+              </div>
+              <div class="mini-data">
+                Station : <span id="p_station">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="statusPill" class="status-pill pill-green">Active</div>
+        </div>
+
+        <hr class="border-secondary">
+
+        <!-- actions -->
+        <div class="row g-3 align-items-end">
+          <div class="col-md-6">
+            <label class="form-label text-white-50">Exact end time </label>
+            <input id="exactUntil" type="datetime-local" class="form-control">
+          </div>
+
+          <div class="col-md-6 d-grid">
+            <button id="btnToggleSuspend" class="btn btn-accent">Suspend</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="/Crimsys/js/admin_cop_suspend.js"></script>
+</body>
+</html>

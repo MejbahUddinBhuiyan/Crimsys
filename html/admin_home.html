@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Admin • Home – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+  <style>
+    .topbar{ background:#0b0b0d; border-bottom:1px solid rgba(225,29,72,.25); }
+    .tile{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      padding:22px 24px; border-radius:16px;
+      transition:.15s ease; color:#fff; text-decoration:none; display:block;
+    }
+    .tile:hover{
+      background:radial-gradient(400px at 20% 0%, rgba(225,29,72,.10), rgba(255,255,255,.06) 60%);
+      border-color:rgba(225,29,72,.45);
+      transform:translateY(-2px);
+      box-shadow:0 16px 40px rgba(225,29,72,.15);
+    }
+    .tile h5{margin:0;font-weight:700;}
+    .tile p{margin:4px 0 0;color:#bbb;}
+    .brand-logo{font-size:26px;}
+  </style>
+</head>
+<body class="radish-black-bg">
+  <!-- Optional: keep session warm. Remove if you don’t need it. -->
+  <script src="/Crimsys/js/admin_ping.js"></script>
+
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/admin_login.html">← Back</a>
+      </div>
+      <div class="pos-center">
+        <a class="brand-logo" href="/Crimsys/index.php">CRIMSYS</a>
+      </div>
+      <div class="pos-right">
+        <a class="btn btn-outline-accent btn-sm"
+           href="/Crimsys/api/admin_logout.php?go=/Crimsys/index.php">
+            Logout
+        </a>
+
+      </div>
+    </div>
+  </nav>
+
+  <main class="container admin-center-wrap">
+    <h2 class="text-white text-center mb-4">Admin Panel</h2>
+
+    <div class="row g-4 admin-tiles justify-content-center">
+      <div class="col-md-6 col-lg-3">
+        <a class="tile" href="/Crimsys/html/admin_cop_create.html">
+          <h5>Create Cop Profile</h5>
+          <p>Set up a new cop account</p>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <a class="tile" href="/Crimsys/html/admin_cop_edit.html">
+          <h5>Edit Cop Profile</h5>
+          <p>Modify an existing profile</p>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <a class="tile" href="/Crimsys/html/admin_cop_delete.html">
+          <h5>Delete Cop Profile</h5>
+          <p>Remove an account</p>
+        </a>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <a class="tile" href="/Crimsys/html/admin_cop_suspend.html">
+          <h5>Suspend / Unsuspend</h5>
+          <p>Temporarily block access</p>
+        </a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

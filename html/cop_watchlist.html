@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Watchlist - CRIMSYS</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; color: white; }
+
+    /* Navbar */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 24px; background: linear-gradient(160deg, #0b0b0d, #160b0f);
+      color: white;
+    }
+    nav a {
+      
+      text-decoration: none; color: white;
+    }
+    nav h2 { margin: 0; font-size: 22px; font-weight: bold; text-transform: uppercase; }
+    nav .brand { font-size: 20px; font-weight: bold; letter-spacing: 2px; }
+
+    /* Search form */
+    #searchForm { display: flex; gap: 10px; margin: 20px; }
+    #searchForm input, #searchForm select, #searchForm button {
+      padding: 8px 10px; border-radius: 5px; border: 1px solid #444; font-size: 14px;
+    }
+    #searchForm button { background-color: #e11d48; color: white; border: none; cursor: pointer; }
+    #searchForm button:hover { background-color: #be123c; }
+
+    /* Table */
+    .watchlist-table {
+      width: 95%; margin: 0 auto 40px auto; border-collapse: collapse;
+      background: #0b0b0d; color: white;
+    }
+    .watchlist-table th, .watchlist-table td {
+      padding: 10px; text-align: left; border-bottom: 1px solid #333;
+    }
+    .watchlist-table th { background-color: #160b0f; }
+    .watchlist-photo { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
+    .status-badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; }
+    .status-active { background-color: #16a34a; color: #fff; }
+    .status-removed { background-color: #6b7280; color: #fff; }
+    .actions button {
+      margin-right: 5px; padding: 5px 10px; border: none; border-radius: 4px;
+      cursor: pointer; font-size: 12px;
+    }
+    .btn-view { background-color: #3b82f6; color: #fff; }
+    .btn-renew { background-color: #22c55e; color: #fff; }
+    .btn-remove { background-color: #ef4444; color: #fff; }
+    .btn-reactivate { background-color: #f97316; color: #fff; }
+
+    /* Modal */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+             width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
+    .modal-content {
+      background: #111; margin: 5% auto; padding: 20px; border: 1px solid #e11d48;
+      border-radius: 8px; width: 400px; color: white;
+    }
+    .modal-photo { width: 100px; height: 100px; border-radius: 8px; margin-bottom: 10px; object-fit: cover; }
+    .close-btn { float: right; font-size: 20px; cursor: pointer; color: #e11d48; }
+  </style>
+</head>
+<body class="radish-black-bg">
+
+  <!-- Navbar -->
+  <nav>
+    <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/cop_home.html">← Back</a>
+    <h2>WATCHLIST</h2>
+    <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+  </nav>
+
+  <!-- Search Form -->
+  <form id="searchForm">
+    <input type="text" name="name" placeholder="Search by Name">
+    <input type="text" name="nid" placeholder="Search by NID">
+    <input type="number" name="criminalId" placeholder="Search by Criminal ID">
+    <select name="status">
+      <option value="Active" selected>Active</option>
+      <option value="Removed">Removed</option>
+    </select>
+    <button type="submit">Search</button>
+  </form>
+
+  <!-- Watchlist Table -->
+  <table class="watchlist-table" id="watchlistTable">
+    <thead>
+      <tr>
+        <th>Photo</th><th>Full Name</th><th>NID</th><th>Criminal ID</th>
+        <th>City / Street</th><th>Age</th><th>Status</th><th>Review Date</th><th>Reason</th><th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- View Modal -->
+  <div id="viewModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <div class="modal-body">
+        <img id="modalPhoto" src="" alt="Criminal Photo" class="modal-photo">
+        <h3 id="modalName"></h3>
+        <p><b>NID:</b> <span id="modalNid"></span></p>
+        <p><b>Criminal ID:</b> <span id="modalCid"></span></p>
+        <p><b>City / Street:</b> <span id="modalAddress"></span></p>
+        <p><b>Age:</b> <span id="modalAge"></span></p>
+        <p><b>Status:</b> <span id="modalStatus"></span></p>
+        <p><b>Review Date:</b> <span id="modalReview"></span></p>
+        <p><b>Reason:</b> <span id="modalReason"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../js/cop_watchlist.js"></script>
+</body>
+</html>

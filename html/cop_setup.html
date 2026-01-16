@@ -1,0 +1,86 @@
+<!-- /Crimsys/html/cop_setup.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>First Run – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+  <style>
+    .setup-card{ width:100%; max-width:720px; }
+    .blue-glass{
+      background: linear-gradient(160deg, rgba(46,72,124,.25), rgba(16,18,32,.35));
+      border: 1px solid rgba(100,180,255,.22);
+      border-radius:16px; padding:24px;
+      box-shadow: 0 16px 36px rgba(0,60,120,.28);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      color: #e6f0ff;
+    }
+    .preview{
+      width:140px;height:140px;border-radius:12px;object-fit:cover;
+      border:1px solid rgba(255,255,255,.18); background:#0a0b10;
+    }
+  </style>
+</head>
+<body class="radish-black-bg">
+
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/login.html">← Back</a>
+      </div>
+      <div class="pos-center"></div>
+      <div class="pos-right">
+        <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container d-flex align-items-center justify-content-center" style="min-height:calc(100vh - 80px);">
+    <div class="glass-card setup-card p-4 p-md-5">
+
+      <div id="banner" class="alert-banner d-none"></div>
+
+      <h3 class="text-white text-center mb-4">Welcome – complete setup</h3>
+
+      <!-- Step 1: Change Password -->
+      <section id="stepPass" class="blue-glass d-none mb-4">
+        <h5 class="mb-3">Change Password</h5>
+        <div class="mb-3">
+          <label class="form-label">New password</label>
+          <input id="newpass" type="password" class="form-control" placeholder="At least 6 characters">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Confirm password</label>
+          <input id="confpass" type="password" class="form-control">
+        </div>
+        <div class="d-flex gap-2">
+          <button id="btnSavePass" class="btn btn-accent">Save Password</button>
+          <button class="btn btn-outline-accent" onclick="location.href='/Crimsys/html/login.html'">Cancel</button>
+        </div>
+      </section>
+
+      <!-- Step 2: Set Photo -->
+      <section id="stepPhoto" class="blue-glass d-none mb-2">
+        <h5 class="mb-3">Set Profile Photo</h5>
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <img id="prevImg" class="preview" src="/Crimsys/img/cops/_placeholder.png" alt="Preview">
+          <div class="flex-grow-1">
+            <input id="photoFile" type="file" accept="image/*" capture="environment" class="form-control">
+            <small class="text-white-50">You may use your phone camera.</small>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button id="btnSavePhoto" class="btn btn-accent">Save Photo</button>
+          <button class="btn btn-outline-accent" onclick="location.href='/Crimsys/html/login.html'">Cancel</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="/Crimsys/js/cop_setup.js"></script>
+</body>
+</html>

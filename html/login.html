@@ -1,0 +1,75 @@
+<!-- C:\xmp\htdocs\Crimsys\html\login.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Cop • Sign In – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+  <!-- Bootstrap like admin pages -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Your shared styles -->
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+
+  <style>
+    /* identical to admin sign in card */
+    .glass-card{
+      width:100%; max-width:680px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(12px) saturate(140%);
+      -webkit-backdrop-filter:blur(12px) saturate(140%);
+      border-radius:16px;
+      box-shadow:0 18px 40px rgba(0,0,0,.35);
+    }
+    .alert-center{
+      text-align:center;
+      color:#ff5b5b;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,0,0,.25);
+      border-radius:12px;
+      padding:.6rem .9rem;
+      margin-bottom:1rem;
+    }
+    .d-none{ display:none!important; }
+  </style>
+</head>
+<body class="radish-black-bg">
+
+  <!-- Topbar (Back | CRIMSYS) -->
+  <nav class="navbar navbar-dark topbar">
+    <div class="container d-flex justify-content-between">
+      <a class="btn btn-outline-accent btn-sm" href="/Crimsys/index.php">← Back</a>
+      <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+    </div>
+  </nav>
+
+  <!-- Centered block (same as admin login) -->
+  <main class="container d-flex align-items-center justify-content-center" style="min-height:calc(100vh - 56px);">
+    <div class="glass-card p-4 p-md-5">
+      <h2 class="text-white text-center mb-4">COP SIGN IN</h2>
+
+      <!-- optional message; we’ll wire with JS later -->
+      <div id="msg" class="alert-center d-none"></div>
+
+      <form id="copForm" novalidate>
+        <div class="mb-3">
+          <label class="form-label text-white-50">Cop ID (8 digits)</label>
+          <input id="copid" type="text" class="form-control"
+                 maxlength="8" inputmode="numeric" autocomplete="username"
+                 placeholder="e.g. 10000042" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-white-50">Password</label>
+          <input id="password" type="password" class="form-control"
+                 autocomplete="current-password" required>
+        </div>
+        <button id="btnLogin" type="button" class="btn btn-accent w-100">Sign In</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Reserved for later (doesn't affect admin) -->
+  <script src="/Crimsys/js/cop_login.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>File New FIR – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+
+  <style>
+    .wizard{max-width:1100px;margin:0 auto}
+    .title{color:#fff;letter-spacing:.06em;text-transform:uppercase;font-weight:800}
+
+    .glass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);
+      border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+    .glass-form{padding:22px}
+    .glass-header{padding:14px 18px}
+
+    .form-control,.form-select,textarea{
+      background:rgba(255,255,255,.08)!important;border:1px solid rgba(255,255,255,.20)!important;color:#fff!important}
+    .form-control::placeholder,textarea::placeholder{color:rgba(255,255,255,.55)}
+    .form-control:focus,.form-select:focus,textarea:focus{
+      background:rgba(255,255,255,.14)!important;border-color:#e11d48!important;
+      box-shadow:0 0 0 .2rem rgba(225,29,72,.25);color:#fff!important}
+
+    .steps{padding:10px 12px}
+    .step-chip{display:inline-flex;align-items:center;gap:.6rem;padding:8px 12px;color:#d7d7d7}
+    .chip-num{width:28px;height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+      font-weight:800;background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.22)}
+    .step-active .chip-num{background:#e11d48;border-color:#e11d48}
+    .step-active{color:#fff}
+
+    .step{display:none}.step.active{display:block}
+    .section-title{color:#fff;font-weight:700}
+    .summary-card{border:1px dashed rgba(255,255,255,.25);border-radius:14px;padding:12px;color:#d8d8d8}
+    .form-nav{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .text-dim{color:#bdbdbd}
+    .mini-badge{font-size:.8rem;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:.1rem .5rem}
+
+    .alert-banner{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);
+      border-radius:12px;text-align:center;padding:.7rem 1rem;margin:0 0 14px 0;color:#fff}
+    .alert-success-banner{border-color:rgba(16,185,129,.45);box-shadow:0 6px 16px rgba(16,185,129,.20)}
+    .alert-danger-banner{border-color:rgba(225,29,72,.35);box-shadow:0 6px 16px rgba(225,29,72,.20)}
+    .d-none{display:none!important}
+
+    /* dropdown cue + native popup */
+    .select-cue{position:relative}
+    .select-cue::after{
+      content:"▾"; position:absolute; right:12px; top:50%; transform:translateY(-50%);
+      pointer-events:none; color:#ddd; font-size:14px; text-shadow:0 1px 0 rgba(0,0,0,.3);
+    }
+    select.form-select{appearance:none;-webkit-appearance:none;-moz-appearance:none}
+    select.form-select option{background:#1d1d1f;color:#fff}
+
+    /* Lighter modal text for your “View” modal */
+    .modal-content{color:#f4f4f4;background:rgba(20,20,22,.75);border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(12px) saturate(140%)}
+    .modal-header,.modal-footer{border-color:rgba(255,255,255,.12)}
+    .modal-body dt{color:#dfe6ef}
+    .modal-body dd{color:#f8fafc}
+
+    /* SUCCESS OVERLAY */
+    .success-overlay{
+      position:fixed; inset:0; z-index:2000;
+      display:none; align-items:center; justify-content:center;
+      background: radial-gradient(1200px 600px at 50% -10%, rgba(225,29,72,.15), transparent 60%),
+                  rgba(0,0,0,.55);
+      backdrop-filter: blur(6px);
+    }
+    .success-overlay.show{display:flex}
+    .success-card{
+      width:min(560px,92vw);
+      text-align:center;
+      padding:28px 24px;
+    }
+    .success-icon{
+      width:74px;height:74px;border-radius:999px;margin:0 auto 12px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.45);
+      box-shadow:0 8px 24px rgba(16,185,129,.25);
+    }
+    .success-icon svg{width:36px;height:36px;fill:#8CF4C2}
+    .success-title{color:#fff;font-weight:800;letter-spacing:.04em}
+    .success-sub{color:#dfe6ef}
+  </style>
+</head>
+<body class="radish-black-bg">
+
+  <!-- Top bar (Back | | CRIMSYS) -->
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/cop_home.html">← Back</a>
+      </div>
+      <div class="pos-center"> </div>
+      <div class="pos-right">
+        <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4 wizard">
+    <!-- Feedback banner (kept for validations / errors) -->
+    <div id="msg" class="alert-banner d-none"></div>
+
+    <!-- Title -->
+    <div class="glass glass-header mb-3 d-flex align-items-center justify-content-between">
+      <h4 class="title mb-0">File New FIR</h4>
+      <div class="text-white-50 small">All fields with <b>*</b> are required</div>
+    </div>
+
+    <!-- Chips -->
+    <div class="glass mb-3">
+      <div class="row steps text-white-50 small g-2">
+        <div class="col step-chip step-active" id="c1"><span class="chip-num">1</span><span>Incident</span></div>
+        <div class="col step-chip" id="c2"><span class="chip-num">2</span><span>Victims &amp; Witnesses</span></div>
+        <div class="col step-chip" id="c3"><span class="chip-num">3</span><span>Suspects &amp; Accused</span></div>
+        <div class="col step-chip" id="c4"><span class="chip-num">4</span><span>Evidence</span></div>
+        <div class="col step-chip" id="c5"><span class="chip-num">5</span><span>Assignment</span></div>
+        <div class="col step-chip" id="c6"><span class="chip-num">6</span><span>Review &amp; Submit</span></div>
+      </div>
+    </div>
+
+    <!-- Wizard -->
+    <form class="glass glass-form" id="firForm" novalidate>
+      <!-- 1 -->
+      <section class="step active" id="step-incident" data-step="1">
+        <h5 class="section-title mb-3">Incident Details</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label text-white-50">Incident Date &amp; Time *</label>
+            <input type="datetime-local" class="form-control" id="incidentDate" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label text-white-50">Crime Type <span class="text-dim">(required if available)</span></label>
+            <div class="select-cue">
+              <select class="form-select" id="crimeType">
+                <option value="">Select crime type…</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-12">
+            <label class="form-label text-white-50">Location *</label>
+            <input type="text" class="form-control" id="location" placeholder="Area, street, landmark…" required>
+          </div>
+          <div class="col-12">
+            <label class="form-label text-white-50">Short Description *</label>
+            <textarea class="form-control" id="description" rows="3" placeholder="Brief description of incident…" required></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label text-white-50">Suspected Info</label>
+            <textarea class="form-control" id="suspectedInfo" rows="2" placeholder="Unknown/known details, identifiers, vehicle, etc."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="step" id="step-vw" data-step="2">
+        <h5 class="section-title mb-3">Victims &amp; Witnesses</h5>
+        <div id="vwList" class="mb-3"></div>
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label text-white-50">Role *</label>
+            <div class="select-cue">
+              <select class="form-select" id="vwRole">
+                <option value="Victim">Victim</option>
+                <option value="Witness">Witness</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <label class="form-label text-white-50">Full Name *</label>
+            <input class="form-control" id="vwName" placeholder="Person name">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label text-white-50">Contact</label>
+            <input class="form-control" id="vwContact" placeholder="Phone / email">
+          </div>
+        </div>
+        <div class="mt-3">
+          <button type="button" class="btn btn-outline-accent btn-sm" id="btnAddVW">Done</button>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section class="step" id="step-sus" data-step="3">
+        <h5 class="section-title mb-3">Suspects &amp; Accused</h5>
+        <div id="susList" class="mb-3"></div>
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label text-white-50">Role *</label>
+            <div class="select-cue">
+              <select class="form-select" id="susRole">
+                <option value="Suspect">Suspect</option>
+                <option value="Accused">Accused</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <label class="form-label text-white-50">Name (or “Unknown”)</label>
+            <input class="form-control" id="susName" placeholder="Name or Unknown">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label text-white-50">Contact</label>
+            <input class="form-control" id="susContact" placeholder="Phone / address">
+          </div>
+        </div>
+        <div class="mt-3">
+          <button type="button" class="btn btn-outline-accent btn-sm" id="btnAddSuspect">Add to List</button>
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section class="step" id="step-evi" data-step="4">
+        <h5 class="section-title mb-3">Evidence / Attachments</h5>
+        <p class="text-white-50">File uploads will be added later. You can proceed without files.</p>
+      </section>
+
+      <!-- 5 -->
+      <section class="step" id="step-assign" data-step="5">
+        <h5 class="section-title mb-3">Assignment</h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label text-white-50">Assigned Officer</label>
+            <input type="text" class="form-control" id="assignedCopDisplay" placeholder="Defaults to you">
+            <div class="text-dim small mt-1">(If left blank, it will be assigned to you.)</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label text-white-50">Status</label>
+            <div class="select-cue">
+              <select class="form-select" id="status">
+                <option value="Open">Open</option>
+                <option value="Under Investigation" selected>Under Investigation</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section class="step" id="step-review" data-step="6">
+        <h5 class="section-title mb-3">Review &amp; Submit</h5>
+        <div class="summary-card mb-3"><div class="text-white fw-bold">Incident</div><div id="revIncidentBody">—</div></div>
+        <div class="summary-card mb-3"><div class="text-white fw-bold">Victims &amp; Witnesses</div><div id="revPersonsBody">—</div></div>
+        <div class="summary-card mb-3"><div class="text-white fw-bold">Suspects &amp; Accused</div><div id="revSuspectsBody">—</div></div>
+        <div class="summary-card"><div class="text-white fw-bold">Assignment &amp; Status</div><div id="revAssignBody">—</div></div>
+      </section>
+
+      <div class="form-nav pt-3">
+        <button type="button" class="btn btn-outline-accent" id="btnBack">Back</button>
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-outline-accent" id="btnSaveDraft">Save Draft</button>
+          <button type="button" class="btn btn-accent" id="btnNext">Next</button>
+          <button type="submit" class="btn btn-accent d-none" id="btnSubmit">Submit FIR</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="py-3"></div>
+  </main>
+
+  <!-- SUCCESS OVERLAY -->
+  <div id="successOverlay" class="success-overlay">
+    <div class="success-card glass">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.0 16.2l-3.5-3.5 1.4-1.4L9 13.4l8.1-8.1 1.4 1.4L9 16.2z"/></svg>
+      </div>
+      <h4 class="success-title mb-1">FIR Submitted</h4>
+      <div class="success-sub mb-3">Your FIR has been recorded successfully.</div>
+      <div class="text-white-50 mb-3">FirID <span class="text-white fw-bold" id="successFirId">#—</span></div>
+      <div class="d-flex justify-content-center">
+        <a id="btnSuccessDone" href="/Crimsys/html/cop_home.html" class="btn btn-accent px-4">Done</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/Crimsys/js/cop_fir_new.js"></script>
+</body>
+</html>

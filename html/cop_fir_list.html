@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FIR List • CRIMSYS</title>
+
+  <!-- Your global stylesheet with radish-black variables & brand bar -->
+  <link rel="stylesheet" href="/Crimsys/css/styles.css" />
+
+  <style>
+    /* ---------- Page-scoped tweaks (safe: won't affect other pages) ---------- */
+
+    /* Dark, readable dropdown popup (most browsers honor option styling) */
+    select, .form-select {
+      background: rgba(255,255,255,0.04);
+      color: #eaeaea;
+      border: 1px solid rgba(225,29,72,.35);
+      border-radius: 10px;
+      padding: .55rem .9rem;
+      outline: none;
+    }
+    select:focus, .form-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(225,29,72,.25);
+    }
+    /* Actual popup items */
+    select option,
+    select optgroup {
+      background: #141016;     /* dark */
+      color: #f2f2f2;          /* light text (fixes white-on-white) */
+    }
+
+    /* Filter inputs */
+    .filter-input {
+      background: rgba(255,255,255,0.04);
+      color: #eee;
+      border: 1px solid rgba(225,29,72,.28);
+      border-radius: 10px;
+      padding: .55rem .9rem;
+    }
+    .filter-input::placeholder { color: #9aa0a6; }
+
+    /* Buttons */
+    .btn-accent {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid rgba(225,29,72,.6);
+      border-radius: 12px;
+      padding: .5rem 1rem;
+      transition: transform .08s ease, background .15s ease;
+    }
+    .btn-accent:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent;
+      color: #eaeaea;
+      border: 1px solid rgba(225,29,72,.35);
+      border-radius: 12px;
+      padding: .5rem 1rem;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: #fff; }
+
+    /* Glassy panels */
+    .glass-panel {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    /* Table look inside glass */
+    .list-wrap { overflow: hidden; }
+    .tbl { width: 100%; border-collapse: collapse; }
+    .tbl th, .tbl td {
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      color: #f3f3f3;
+    }
+    .tbl th { font-weight: 700; color: #fff; }
+    .tbl tr:last-child td { border-bottom: 0; }
+    .tbl tr:hover td { background: rgba(255,255,255,0.035); }
+
+    /* Status chips */
+    .chip { display: inline-block; font-size: .85rem; padding: 6px 10px; border-radius: 999px; font-weight: 700; }
+    .chip-open   { background: #4b5563; color: #fff; }          /* grey */
+    .chip-prog   { background: #a00430; color: #fff; }          /* rose/dark red */
+    .chip-done   { background: #16a34a; color: #fff; }          /* green */
+
+    /* Page spacing */
+    .page-container { max-width: 1120px; margin: 24px auto; padding: 0 18px; }
+    .filters { gap: 10px; }
+    .top-actions { gap: 10px; }
+    .row { display: flex; align-items: center; }
+    .grow { flex: 1 1 auto; }
+    .gap-8 { gap: 8px; }
+    .gap-12 { gap: 12px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-20 { margin-top: 20px; }
+  </style>
+</head>
+
+<body class="radish-black-bg">
+  <!-- Top bar (Back | | CRIMSYS) from your style.css -->
+
+  <main class="page-container">
+    <nav class="navbar navbar-dark topbar">
+      <div class="container grid-topbar">
+        <div class="pos-left">
+          <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/cop_home.html">← Back</a>
+        </div>
+        <div class="pos-center"></div>
+        <div class="pos-right">
+          <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+        </div>
+      </div>
+    </nav>
+    <!-- Header + "Open a FIR" (optional) -->
+    <div class="row top-actions  ">
+      <div class="grow">
+        <h3 style="color:#fff;margin:0;">FIR List</h3>
+        <p style="color:#cfcfcf;margin:.25rem 0 0;">Find cases quickly with the filters below</p>
+      </div>
+      <div>
+        <!-- <a class="btn btn-outline-accent btn-sm" href="#">Open a FIR</a> -->
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <section class="glass-panel mt-16" style="padding:14px 14px;">
+      <div class="row filters">
+        <input id="q" type="text" class="filter-input grow" placeholder="Search text or FIR ID…">
+
+        <select id="status" class="form-select">
+          <option value="">All statuses</option>
+          <option value="Open">Open</option>
+          <option value="Under Investigation">Under Investigation</option>
+          <option value="Resolved">Resolved</option>
+        </select>
+
+        <input id="from" type="date" class="filter-input">
+        <input id="to"   type="date" class="filter-input">
+        <input id="cop"  type="text" class="filter-input" placeholder="Assigned Cop ID">
+
+        <button id="apply" class="btn btn-outline-accent btn-sm">Apply</button>
+        <button id="reset" class="btn btn-outline-accent btn-sm">Reset</button>
+      </div>
+    </section>
+
+    <!-- Results (glassy) -->
+    <section class="glass-panel list-wrap mt-20">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>FIR ID</th>
+            <th>Created</th>
+            <th>Status</th>
+            <th>Crime Type</th>
+            <th>Location</th>
+            <th>Assigned Cop</th>
+            <th style="text-align:right;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="rows">
+          <!-- Demo rows so you can see the look right away -->
+          <tr>
+            <td>10011</td>
+            <td>2025-09-01 10:22</td>
+            <td><span class="chip chip-open">Open</span></td>
+            <td>Theft</td>
+            <td>Banani, Dhaka</td>
+            <td>Cop #10000004</td>
+            <td style="text-align:right;"><a class="btn-ghost" href="/Crimsys/html/cop_fir_view.html?firId=10011">Open</a></td>
+          </tr>
+          <tr>
+            <td>10012</td>
+            <td>2025-09-02 12:37</td>
+            <td><span class="chip chip-prog">Under Investigation</span></td>
+            <td>Fraud</td>
+            <td>Uttara, Dhaka</td>
+            <td>Cop #10000003</td>
+            <td style="text-align:right;"><a class="btn-ghost" href="/Crimsys/html/cop_fir_view.html?firId=10012">Open</a></td>
+          </tr>
+          <tr>
+            <td>10013</td>
+            <td>2025-09-03 08:15</td>
+            <td><span class="chip chip-done">Resolved</span></td>
+            <td>Assault</td>
+            <td>Mirpur, Dhaka</td>
+            <td>Cop #10000002</td>
+            <td style="text-align:right;"><a class="btn-ghost" href="/Crimsys/html/cop_fir_view.html?firId=10013">Open</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    // (Optional) Wire up Apply/Reset now; real data hook can come later.
+    document.getElementById('reset').addEventListener('click', () => {
+      document.getElementById('q').value = '';
+      document.getElementById('status').value = '';
+      document.getElementById('from').value = '';
+      document.getElementById('to').value   = '';
+      document.getElementById('cop').value  = '';
+    });
+    document.getElementById('apply').addEventListener('click', () => {
+      // keep for future API call; UI already looks correct
+      console.log('Apply filters', {
+        q:      document.getElementById('q').value.trim(),
+        status: document.getElementById('status').value,
+        from:   document.getElementById('from').value,
+        to:     document.getElementById('to').value,
+        cop:    document.getElementById('cop').value.trim()
+      });
+    });
+  </script>
+  <script src="/Crimsys/js/cop_fir_list.js"></script>
+
+</body>
+</html>

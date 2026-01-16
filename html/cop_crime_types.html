@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Crime Types – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+  <style>
+    .wrap-card{width:100%;max-width:1000px;margin:0 auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:18px 20px;backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+    .crime-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:14px 14px;display:flex;align-items:center;justify-content:space-between}
+    .status-pill{padding:.25rem .7rem;border-radius:999px;font-weight:700;font-size:.85rem;border:1px solid rgba(255,255,255,.25);white-space:nowrap}
+    .pill-green{background:rgba(16,185,129,.16);color:#8CF4C2;border-color:rgba(16,185,129,.35)}
+    .pill-red{background:rgba(225,29,72,.16);color:#FF98AF;border-color:rgba(225,29,72,.35)}
+    .glass-search{min-width:270px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:12px;padding:.42rem .75rem;outline:none}
+    .glass-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:2000}
+    .glass-modal .box{width:100%;max-width:560px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.35);padding:20px 22px;color:#fff}
+    .klabel{color:#b9c3d1;width:160px;display:inline-block}
+    .alert-banner{background:rgba(255,255,255,.06);border:1px solid rgba(225,29,72,.35);border-radius:12px;text-align:center;color:#fff;padding:.7rem 1rem;margin:0 0 14px 0}
+    .alert-success-banner{border-color:rgba(16,185,129,.45);box-shadow:0 6px 16px rgba(16,185,129,.25)}
+    .alert-danger-banner{border-color:rgba(225,29,72,.45);box-shadow:0 6px 16px rgba(225,29,72,.25)}
+  </style>
+</head>
+<body class="radish-black-bg">
+
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/cop_home.html">← Back</a>
+      </div>
+      <div class="pos-center">
+        <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+      </div>
+      <div class="pos-right">
+        <input id="crimeSearch" type="text" class="glass-search" placeholder="Search crime types…">
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div id="msg" class="alert-banner d-none"></div>
+
+    <div class="wrap-card">
+      <h4 class="text-white mb-3">CRIME TYPES</h4>
+
+      <div class="row g-2 align-items-center mb-3">
+        <div class="col-md-8">
+          <input id="newName" class="form-control" placeholder="e.g., THEFT, ROBBERY, FRAUD">
+        </div>
+        <div class="col-md-2">
+          <select id="filterSel" class="form-select">
+            <option value="all" selected>All</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="col-md-2 d-grid">
+          <button id="btnAdd" class="btn btn-accent">Add Type</button>
+        </div>
+      </div>
+
+      <div id="list" class="d-flex flex-column gap-2"></div>
+    </div>
+  </main>
+
+  <!-- View modal -->
+  <div id="viewModal" class="glass-modal" aria-hidden="true">
+    <div class="box">
+      <h5 class="mb-2">Crime Type Details</h5>
+      <div id="viewBody" class="mb-3" style="line-height:1.7;"></div>
+      <div class="text-end">
+        <button id="btnCloseView" class="btn btn-outline-accent">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPORTANT: correct filename -->
+  <script src="/Crimsys/js/cop_crime_types.js"></script>
+</body>
+</html>

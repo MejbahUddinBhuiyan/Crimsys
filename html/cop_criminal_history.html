@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Criminal History</title>
+
+  <!-- Global theme (radish black, navbar, buttons, etc.) -->
+  <link rel="stylesheet" href="/Crimsys/css/styles.css" />
+
+  <style>
+    /* ========= PAGE LAYOUT ========= */
+    body.radish-black-bg { min-height: 100vh; }
+    .page-container { padding: 18px 16px 40px; max-width: 1280px; margin: 0 auto; }
+
+    /* ========= SEARCH BAR (pill group) ========= */
+    .search-wrap {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 12px;
+      padding: 10px;
+      backdrop-filter: blur(2px);
+      margin-bottom: 14px;
+    }
+    .search-bar {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .search-bar .pill {
+      background: #0e0e0f; color: #fff;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 10px; padding: 8px 10px;
+      outline: none; height: 36px;
+    }
+    .search-bar .pill::placeholder { color: rgba(255,255,255,.55); }
+    .search-bar .pill:focus { border-color: var(--accent, #ef4444); box-shadow: 0 0 0 2px rgba(239,68,68,.25); }
+    .search-bar .btn-search {
+      background: var(--accent, #ef4444);
+      color: #fff; border: none; border-radius: 10px; padding: 0 14px;
+      height: 36px; cursor: pointer; font-weight: 600;
+    }
+    .search-bar .btn-search:hover { background: var(--accent-hover, #db2f2f); }
+
+    /* ========= TABLE (PROFESSIONAL) ========= */
+    .table-box {
+      overflow: hidden; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+    table.ch-table { width: 100%; border-collapse: collapse; color: #fff; }
+    .ch-table thead th {
+      background: linear-gradient(180deg, rgba(255,255,255,.13), rgba(255,255,255,.07));
+      padding: 12px 14px; text-align: left; font-weight: 700; letter-spacing:.2px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .ch-table tbody td {
+      padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.03));
+    }
+    .ch-table tbody tr:hover td { background: rgba(225,29,72,.10); }
+
+    /* Badges & action buttons */
+    .badge {
+      display:inline-block; padding: 4px 10px; border-radius: 999px; font-size: .86rem;
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .badge-open { background: rgba(253,186,116,.11); color:#ffd6a3; border-color: rgba(253,186,116,.35); }
+    .badge-trial { background: rgba(96,165,250,.13); color:#bedbff; border-color: rgba(96,165,250,.35); }
+    .badge-solved { background: rgba(52,211,153,.13); color:#b9f3df; border-color: rgba(52,211,153,.35); }
+
+    .btn-action {
+      border: 1px solid rgba(255,255,255,.22);
+      color: #fff; background: transparent; border-radius: 10px;
+      padding: 6px 10px; cursor:pointer;
+    }
+    .btn-action:hover { background: rgba(255,255,255,.08); }
+
+    /* ========= VIEW MODAL ========= */
+    .ch-modal.hidden { display:none; }
+    .ch-modal { position:fixed; inset:0; z-index:1000; }
+    .ch-backdrop { position:absolute; inset:0; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); }
+    .ch-card {
+      position:relative; margin:6rem auto 2rem; max-width:720px; width:calc(100% - 2rem);
+      border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.08); color:#fff; box-shadow:0 10px 30px rgba(0,0,0,.45);
+    }
+    .ch-card-header, .ch-card-footer { padding:14px 16px; }
+    .ch-card-header { border-bottom:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:space-between; }
+    .ch-card-footer { border-top:1px solid rgba(255,255,255,.08); text-align:right; }
+    .ch-title { margin:0; font-size:1.15rem; font-weight:700; letter-spacing:.3px; color:#fff; }
+    .ch-close { appearance:none; border:0; background:transparent; color:#fff; font-size:1.4rem; line-height:1; cursor:pointer; padding:4px 8px; border-radius:8px; }
+    .ch-close:hover { background:rgba(255,255,255,.08); }
+    .ch-card-body { padding:10px 16px 4px; }
+    .ch-row { display:grid; grid-template-columns: 160px 1fr; gap:14px; padding:10px 0; border-bottom:1px dashed rgba(255,255,255,.08); }
+    .ch-row:last-child { border-bottom:0; }
+    .ch-label { color:rgba(255,255,255,.7); font-size:.95rem; }
+    .ch-value { color:#fff; font-weight:600; }
+    .btn-outline { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.22); padding:6px 12px; border-radius:10px; cursor:pointer; }
+    .btn-outline:hover { background:rgba(255,255,255,.08); }
+    @media (max-width:520px){ .ch-row { grid-template-columns: 1fr; gap:6px; } .ch-label{font-weight:600;} }
+  </style>
+</head>
+
+<body class="radish-black-bg">
+  <!-- ====== NAVBAR (exact snippet you asked) ====== -->
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/cop_home.html">← Back</a>
+      </div>
+      <div class="pos-center"><h2 style="color:#fff;margin:0;">Criminal History</h2></div>
+      <div class="pos-right">
+        <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ====== CONTENT ====== -->
+  <div class="page-container">
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <div class="search-bar">
+        <input id="sName" class="pill" type="text" placeholder="Search by Name" />
+        <input id="sNid" class="pill" type="text" placeholder="Search by NID" />
+        <input id="sCriminalId" class="pill" type="text" placeholder="Search by Criminal ID" />
+        <select id="sStatus" class="pill">
+          <option value="">All</option>
+          <option value="Open">Open</option>
+          <option value="Under Trial">Under Trial</option>
+          <option value="Solved">Solved</option>
+        </select>
+        <button id="btnSearch" class="btn-search">Search</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-box">
+      <table class="ch-table" id="historyTable">
+        <thead>
+          <tr>
+            <th>Criminal ID</th>
+            <th>Name</th>   
+            <th>Date/Time</th>
+            <th>Case Status</th>
+            <th>Location</th>
+            <th>Crime Type</th>
+            <th>Officer in Charge</th>
+            <th style="width:120px">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="historyTbody">
+          <tr><td colspan="6">No records yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ====== VIEW MODAL ====== -->
+  <div id="historyModal" class="ch-modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="ch-backdrop" data-close-modal></div>
+    <div class="ch-card" role="document">
+      <div class="ch-card-header">
+        <h3 class="ch-title">Criminal History</h3>
+        <button class="ch-close" type="button" aria-label="Close" data-close-modal>×</button>
+      </div>
+      <div class="ch-card-body">
+        <div class="ch-row"><span class="ch-label">Date/Time</span><span class="ch-value" id="mhDateTime">—</span></div>
+        <div class="ch-row"><span class="ch-label">Case Status</span><span class="ch-value" id="mhCaseStatus">—</span></div>
+        <div class="ch-row"><span class="ch-label">Crime Type</span><span class="ch-value" id="mhCrimeType">—</span></div>
+        <div class="ch-row"><span class="ch-label">Officer in Charge</span><span class="ch-value" id="mhOfficer">—</span></div>
+        <div class="ch-row"><span class="ch-label">Location</span><span class="ch-value" id="mhLocation">—</span></div>
+        <div class="ch-row" id="mhFirsRow" style="display:none;">
+          <span class="ch-label">Linked FIRs</span>
+          <div class="ch-value" id="mhFirs"></div>
+        </div>
+      </div>
+      <div class="ch-card-footer">
+        <button class="btn-outline" type="button" data-close-modal>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page JS -->
+  <script src="/Crimsys/js/cop_criminal_history.js"></script>
+</body>
+</html>

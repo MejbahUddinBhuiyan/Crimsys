@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Criminal Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Use ONLY your styles.css to avoid the 404 -->
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+
+  <style>
+    /* Radish-black background */
+    body.radish-black-bg {
+      min-height: 100vh;
+      margin: 0;
+      color: #ffffff;
+      background:
+        radial-gradient(1100px circle at 32% 22%, rgba(225, 29, 72, 0.12), transparent 40%),
+        linear-gradient(160deg, #0b0b0d, #0c0c10);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* Top bar with Back + CRIMSYS, fixed and simple */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+    }
+    .back-btn {
+      border: 1px solid #e84a5f;
+      color: #fff;
+      background: transparent;
+      padding: 6px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .back-btn:hover {
+      background: #e84a5f;
+      color: #fff;
+    }
+    .brand {
+      margin-left: auto;
+      letter-spacing: .2rem;
+      font-weight: 700;
+      opacity: .85;
+    }
+
+    /* Center the entire page content */
+    .page {
+      min-height: calc(100vh - 52px); /* minus the topbar */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    /* The centered shell */
+    .shell {
+      width: 100%;
+      max-width: 960px;
+      display: grid;
+      gap: 18px;
+    }
+
+    /* Card look consistent with your app */
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    /* Identity row */
+    .identity {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+    .avatar {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #e84a5f;
+      background: #111;
+    }
+    .name {
+      font-size: 22px;
+      font-weight: 650;
+      margin: 0 0 6px 0;
+    }
+    .meta {
+      color: #cfd0d3;
+      font-size: 14px;
+    }
+    .title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .row2 {
+      display: grid;
+      gap: 8px;
+      color: #e7e7ea;
+      font-size: 14.5px;
+      line-height: 1.5;
+    }
+    .muted { color: #cfd0d3; }
+  </style>
+</head>
+<body class="radish-black-bg">
+  <!-- Top bar -->
+  <div class="topbar">
+    <a class="back-btn" href="javascript:history.back()">← Back</a>
+    <div class="brand">CRIMSYS</div>
+  </div>
+
+  <!-- Centered content -->
+  <main class="page">
+    <div class="shell">
+      <!-- Identity -->
+      <section class="card">
+        <div class="identity">
+          <img id="avatar" class="avatar" alt="Photo">
+          <div>
+            <h1 id="nameText" class="name">—</h1>
+            <div class="meta">
+              NID: <span id="nidText">—</span>
+              <span class="muted"> | </span>
+              City: <span id="cityText">—</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Overview -->
+      <section class="card">
+        <div class="title">Overview</div>
+        <div class="row2">
+          <div>Full Name: <span id="fullNameText" class="muted">—</span></div>
+          <div>NID: <span id="nidDetail" class="muted">—</span></div>
+          <div>DOB: <span id="dobText" class="muted">—</span></div>
+          <div>Address: <span id="addressText" class="muted">—</span></div>
+        </div>
+      </section>
+
+      <!-- FIRs -->
+      <section class="card">
+        <div class="title">Involved FIRs</div>
+        <div id="firList" class="muted">No FIRs linked.</div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/Crimsys/js/cop_criminal_profile.js"></script>
+</body>
+</html>

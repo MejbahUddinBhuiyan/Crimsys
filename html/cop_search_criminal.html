@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CRIMSYS — Search Records</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Global styles -->
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+
+  <style>
+    body.radish-black-bg { min-height: 100vh; }
+
+    .topbar {
+      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,0));
+      border-bottom: 1px solid rgba(225,29,72,.25);
+      padding: .5rem 0;
+    }
+    .grid-topbar {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+    }
+    .grid-topbar .pos-left { justify-self: start; }
+    .grid-topbar .pos-center { justify-self: center; }
+    .grid-topbar .pos-right { justify-self: end; }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(225,29,72,.25);
+      border-radius: 14px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    .search-rail .form-control,
+    .search-rail .form-select {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(225,29,72,.3);
+      color: #fff;
+    }
+    .search-rail .form-control::placeholder { color: #c9c9c9; }
+
+    .result-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(225,29,72,.22);
+      border-radius: 14px;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s;
+    }
+    .result-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 30px rgba(225,29,72,.12);
+    }
+
+    .avatar {
+      width: 60px; height: 60px; border-radius: 12px;
+      object-fit: cover; border: 1px solid rgba(225,29,72,.25);
+      background: rgba(255,255,255,.06);
+    }
+
+    .badge-soft {
+      background: rgba(225,29,72,.12);
+      border: 1px solid rgba(225,29,72,.35);
+      color: #fff;
+      padding: .25rem .5rem; border-radius: 999px;
+      font-weight: 600; font-size: .8rem;
+    }
+
+    /* Dark dropdown styling */
+    select.form-select {
+      background: rgba(30, 30, 30, 0.95) !important;
+      color: #fff !important;
+      border: 1px solid rgba(225,29,72,.3);
+      color-scheme: dark;
+    }
+    select.form-select option {
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    .muted { color:#cfcfcf; }
+    .empty-state {
+      padding: 3rem 1rem;
+      text-align: center;
+      color: #d6d6d6;
+    }
+    /* Force dark dropdown styling */
+    .search-rail .form-select {
+         background: rgba(30, 30, 30, 0.95) !important; /* dark background */
+         color: #fff !important;                       /* white text */
+         border: 1px solid rgba(225,29,72,.3);
+    }
+
+/* Dropdown options */
+    .search-rail .form-select option {
+         background: #1a1a1a;  /* dark */
+         color: #fff;          /* readable */
+    }
+
+/* Show arrow clearly */
+    .search-rail .form-select {
+         appearance: auto; /* keeps native arrow visible */
+    }
+  </style>
+</head>
+
+<body class="radish-black-bg">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/cop_home.html">← Back</a>
+      </div>
+      <div class="pos-center"></div>
+      <div class="pos-right">
+        <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4 py-md-5">
+    <!-- Header -->
+    <div class="d-flex align-items-end justify-content-between mb-3">
+      <div>
+        <h3 class="text-white mb-1">Search Records</h3>
+        <p class="muted mb-0">Find by NID or name — open full profiles</p>
+      </div>
+    </div>
+
+    <!-- Search form -->
+    <section class="panel p-3 p-md-4 mb-4 search-rail">
+      <div class="row g-2 g-md-3 align-items-center">
+        <div class="col-12 col-md-6 col-lg-7">
+          <label class="form-label text-white-50 small mb-1">Search</label>
+          <input id="q" type="text" class="form-control" placeholder="Enter NID or name" />
+        </div>
+
+        <div class="col-6 col-md-3 col-lg-2">
+          <label class="form-label text-white-50 small mb-1">Role (optional)</label>
+          <select id="role" class="form-select">
+            <option value="">All roles</option>
+            <option value="Suspect">Suspect</option>
+            <option value="Accused">Accused</option>
+            <option value="Witness">Witness</option>
+            <option value="Victim">Victim</option>
+          </select>
+        </div>
+
+        <div class="col-6 col-md-3 col-lg-2">
+          <label class="form-label text-white-50 small mb-1">Limit</label>
+          <select id="limit" class="form-select">
+            <option>10</option><option selected>20</option><option>50</option>
+          </select>
+        </div>
+
+        <div class="col-12 col-lg-1 d-grid d-md-flex gap-2 justify-content-lg-end">
+          <button id="btnSearch" class="btn btn-outline-accent btn-sm">Search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="panel p-2 p-md-3">
+      <div id="resultSummary" class="px-2 px-md-3 pt-2 pb-1 muted small"></div>
+      <div id="results" class="list-group list-group-flush">
+        <div class="empty-state">
+          Start by typing a <strong>NID</strong> or <strong>name</strong>, then click <em>Search</em>.
+        </div>
+      </div>
+      <div id="pager" class="d-flex justify-content-between align-items-center px-3 py-2">
+        <div id="pageInfo" class="muted small"></div>
+        <div class="d-flex gap-2">
+          <button id="prevPage" class="btn btn-outline-accent btn-sm" disabled>Prev</button>
+          <button id="nextPage" class="btn btn-outline-accent btn-sm" disabled>Next</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const btnSearch = document.getElementById("btnSearch");
+      btnSearch.addEventListener("click", () => {
+        const q = document.getElementById("q").value.trim();
+        const role = document.getElementById("role").value;
+        const limit = document.getElementById("limit").value;
+        console.log({ q, role, limit }); // test log, will be replaced with API call
+      });
+    });
+  </script>
+  <script src="/Crimsys/js/cop_search_criminal.js"></script>
+</body>
+</html>

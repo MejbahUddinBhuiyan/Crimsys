@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Smart Suspect Identifier – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+  <style>
+    .page-wrap{max-width:1200px;margin:0 auto}
+    .glass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);
+      border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+    .glass-header{padding:14px 18px}
+    .glass-body{padding:18px}
+    .title{color:#fff;letter-spacing:.04em;text-transform:uppercase;font-weight:800}
+    .mini{font-size:.9rem;color:#cbd5e1}
+
+    /* Inputs on dark */
+    .form-control,.form-select{
+      background:rgba(255,255,255,.08)!important;
+      border:1px solid rgba(255,255,255,.20)!important;
+      color:#fff!important;
+    }
+    .form-control:focus,.form-select:focus{
+      background:rgba(255,255,255,.14)!important;
+      border-color:#e11d48!important;
+      box-shadow:0 0 0 .2rem rgba(225,29,72,.25);
+      color:#fff!important;
+    }
+
+    /* Chevron on selects */
+    .form-select{
+      -webkit-appearance:none;-moz-appearance:none;appearance:none;
+      background-image:
+        url("data:image/svg+xml;utf8,<svg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg' fill='%23cbd5e1'><path d='M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/></svg>") !important;
+      background-repeat:no-repeat!important;
+      background-position:right .9rem center!important;
+      background-size:16px 16px!important;
+      padding-right:2.2rem!important;
+    }
+    select::-ms-expand{display:none;}
+
+    /* Dropdown panel + options (avoid white list) */
+    .form-select option,
+    .form-select optgroup{
+      background-color:#18181b;
+      color:#fff;
+    }
+    .form-select option:checked,
+    .form-select option:hover{background-color:#24242a;color:#fff}
+    .form-select option[disabled]{color:#9ca3af}
+
+    /* Tabs */
+    .tabs .nav-link{color:#cbd5e1;border:none}
+    .tabs .nav-link.active{color:#fff;border-bottom:2px solid #e11d48;background:transparent}
+
+    /* Cards */
+    .badge-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:#e5e7eb;padding:.25rem .5rem;border-radius:999px;font-size:.75rem}
+    .result-card{transition:transform .12s ease, box-shadow .12s ease;cursor:pointer}
+    .result-card:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(0,0,0,.35)}
+
+    /* Drawer */
+    .drawer{position:fixed;top:0;right:-480px;width:480px;max-width:100%;height:100vh;background:#121215;border-left:1px solid rgba(255,255,255,.12);box-shadow:-24px 0 48px rgba(0,0,0,.45);z-index:1050;transition:right .2s ease}
+    .drawer.open{right:0}
+    .avatar{width:56px;height:56px;border-radius:12px;object-fit:cover;background:#1f2937}
+     /* Force white text for the items rendered by the JS list renderer */
+    #panelAll .result-title,
+    #panelCdb .result-title,
+    #panelFir .result-title {
+      color: #fff !important;
+    }
+
+    #panelAll .result-sub,
+    #panelCdb .result-sub,
+    #panelFir .result-sub {
+      color: rgba(255,255,255,.82) !important;
+    }
+
+    #panelAll .result-age,
+    #panelCdb .result-age,
+    #panelFir .result-age {
+      color: rgba(255,255,255,.88) !important;
+    } 
+
+    /* Make age fully bright/opaque */
+    #panelAll .result-age,
+    #panelCdb .result-age,
+    #panelFir .result-age {
+      color: #fff !important;
+      opacity: 1 !important;
+      filter: none !important;
+      font-weight: 600;          /* optional: a touch bolder */
+    }
+    
+    /* Make the age pill fully bright in all result panels */
+    #panelAll  .result-row .pill,
+    #panelCdb  .result-row .pill,
+    #panelFir  .result-row .pill {
+      color: #fff !important;                    /* text color */
+      background: rgba(255,255,255,0.06) !important;  /* optional soft bg */
+      border-color: rgba(255,255,255,0.18) !important; /* if it has a border */
+      opacity: 1 !important;
+      filter: none !important;
+    }
+    #panelAll .result-row .pill,
+    #panelCdb .result-row .pill,
+    #panelFir .result-row .pill {
+      color: #fff !important;
+      opacity: 1 !important;
+      filter: none !important;
+      background: transparent !important;
+      border-color: transparent !important;
+    }
+/* Force bright age pill color in results */
+    #panelAll  .result-item .pill,
+    #panelCdb  .result-item .pill,
+    #panelFir  .result-item .pill {
+         color: #fff !important;                 /* make the text white */
+         opacity: 1 !important;                  /* ensure no dimming */
+         filter: none !important;
+         background: transparent !important;     /* keep it clean (optional) */
+         border-color: transparent !important;
+    }
+    .empty-hint{
+      color: #fff !important;   
+    }
+        
+  </style>
+</head>
+<body class="radish-black-bg">
+
+<nav class="navbar navbar-dark topbar">
+  <div class="container d-flex justify-content-between">
+    <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/cop_home.html">← Back</a>
+    <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+  </div>
+</nav>
+
+<!-- smart-page wrapper (for your loading overlay) -->
+<div class="smart-page">
+<main class="container py-4 page-wrap">
+
+  <div class="glass glass-header mb-3 d-flex align-items-center justify-content-between">
+    <h4 class="title mb-0">Smart Suspect Identifier</h4>
+    <div class="text-white-50 mini">Find likely suspects from partial data</div>
+  </div>
+
+  <!-- Search panel -->
+  <div class="glass glass-body mb-3">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label text-white-50">Full name (partial)</label>
+        <input id="ssName" class="form-control" placeholder="e.g., Karim / Rahm">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label text-white-50">NID (partial)</label>
+        <input id="ssNid" class="form-control" inputmode="numeric" placeholder="e.g., 6969">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label text-white-50">Date of birth</label>
+        <input id="ssDob" type="date" class="form-control">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label text-white-50">District</label>
+        <select id="ssDistrict" class="form-select">
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label text-white-50">Thana</label>
+        <select id="ssThana" class="form-select" disabled>
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label text-white-50">Photo (optional)</label>
+        <input id="ssPhoto" type="file" accept="image/*" class="form-control">
+      </div>
+
+      <div class="col-12 d-flex gap-2 mt-1">
+        <button id="btnFind" class="btn btn-accent">Find suspects</button>
+        <button id="btnReset" class="btn btn-outline-accent">Reset</button>
+        <div class="ms-auto d-flex align-items-center gap-3 mini">
+          <label class="d-flex align-items-center gap-2">
+            <input id="ssStrict" type="checkbox" class="form-check-input"> Strict mode
+          </label>
+          <label class="d-flex align-items-center gap-2">
+            <input id="ssAuto" type="checkbox" class="form-check-input"> Auto-apply
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="glass glass-body mb-3">
+    <ul class="nav tabs mb-3" role="tablist">
+      <li class="nav-item" role="presentation"><button class="nav-link active" data-tab="all" type="button">All</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-tab="cdb" type="button">Criminal DB</button></li>
+      <li class="nav-item" role="presentation"><button class="nav-link" data-tab="fir" type="button">FIR History</button></li>
+    </ul>
+
+    <!-- Panels required by your JS -->
+    <div id="panelAll">
+      <div id="listAll" class="row g-3"></div>
+    </div>
+    <div id="panelCdb" class="d-none">
+      <div id="listCdb" class="row g-3"></div>
+    </div>
+    <div id="panelFir" class="d-none">
+      <div id="listFir" class="row g-3"></div>
+    </div>
+
+    <div id="emptyState" class="text-center text-white-50 py-5 d-none">
+      <div class="mb-2">No matches yet</div>
+      <div class="mini">Try adding NID or Date of Birth, or choose District/Thana</div>
+    </div>
+  </div>
+
+  <div class="py-3"></div>
+</main>
+</div><!-- /.smart-page -->
+
+<!-- Drawer -->
+<aside id="drawer" class="drawer">
+  <div class="d-flex align-items-center justify-content-between p-3 border-bottom border-secondary">
+    <div class="d-flex align-items-center gap-3">
+      <img id="drPhoto" class="avatar" alt="">
+      <div>
+        <div id="drName" class="fw-bold text-white"></div>
+        <div class="mini">Age <span id="drAge">—</span> • <span id="drSource">—</span> • <span id="drScore" class="badge-chip">score</span></div>
+      </div>
+    </div>
+    <button id="drClose" class="btn btn-sm btn-outline-accent">Close</button>
+  </div>
+
+  <div class="p-3">
+    <div class="mini mb-2 text-white-50">Identity</div>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <span class="badge-chip">NID: <span id="drNid">—</span></span>
+      <span class="badge-chip">DOB: <span id="drDob">—</span></span>
+      <span class="badge-chip">District: <span id="drDistrict">—</span></span>
+      <span class="badge-chip">Thana: <span id="drThana">—</span></span>
+    </div>
+
+    <div class="mini mb-2 text-white-50">Recent appearances</div>
+    <div id="drTimeline" class="list-group list-group-flush mb-3"></div>
+
+    <div class="d-grid gap-2">
+      <button id="btnAttach" class="btn btn-accent">Attach to current FIR</button>
+      <button id="btnOpenRecord" class="btn btn-outline-accent">Open full record</button>
+    </div>
+  </div>
+</aside>
+
+<!-- Card template -->
+<template id="cardTpl">
+  <div class="col-12 col-md-6">
+    <div class="glass p-3 result-card d-flex gap-3 align-items-center">
+      <img class="avatar" src="" alt="">
+      <div class="flex-fill">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="text-white fw-semibold name">—</div>
+          <span class="badge-chip score">0</span>
+        </div>
+        <div class="mini text-white-50">
+          <span class="source">—</span> • Last seen <span class="last">—</span>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-2">
+          <span class="badge-chip chip-nid d-none">NID</span>
+          <span class="badge-chip chip-dob d-none">DOB</span>
+          <span class="badge-chip chip-district d-none">District</span>
+          <span class="badge-chip chip-thana d-none">Thana</span>
+          <span class="badge-chip chip-photo d-none">Photo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Your JS can live here; it will find the IDs exactly as specified -->
+<script src="/Crimsys/js/suspect_identifier.js"></script>
+</body>
+</html>

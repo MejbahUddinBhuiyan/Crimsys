@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Cop Home – CRIMSYS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/Crimsys/css/styles.css" rel="stylesheet">
+  <style>
+    /* Header (glass) */
+    .cop-header{
+      display:flex; align-items:center; gap:14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border-radius:16px; padding:16px 18px;
+    }
+    .cop-photo{
+      width:80px; height:80px; object-fit:cover;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.25);
+      background:#0f0f12;
+    }
+    .cop-main h4{
+      margin:0; color:#fff; font-weight:800; text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+    .cop-meta{ color:#bbb; font-size:.95rem; margin-top:4px; }
+
+    .status-pill{
+      padding:.25rem .7rem; border-radius:999px; font-weight:700; font-size:.85rem;
+      border:1px solid rgba(255,255,255,.25);
+      white-space:nowrap;
+    }
+    .pill-green{ background:rgba(16,185,129,.16); color:#8CF4C2; border-color:rgba(16,185,129,.35); }
+    .pill-red  { background:rgba(225,29,72,.16);  color:#FF98AF; border-color:rgba(225,29,72,.35); }
+
+    /* Tiles (reuse admin look) */
+    .cop-tiles .tile {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border-radius: 16px;
+      padding: 20px 22px;
+      transition: transform .12s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+      height: 100%;
+    }
+    .cop-tiles .tile:hover{
+      background: radial-gradient(500px at 15% 0%, rgba(225,29,72,.08), rgba(255,255,255,.06) 60%);
+      border-color: rgba(225,29,72,.45);
+      box-shadow: 0 16px 40px rgba(225,29,72,.18);
+      transform: translateY(-2px);
+    }
+    .tile .title{ color:#fff; font-weight:700; font-size:1.15rem; }
+    .tile .sub{ color:#bbb; font-size:.93rem; margin-top:2px; }
+    .tile-link{ text-decoration:none; color:inherit; display:block; }
+  </style>
+</head>
+<body class="radish-black-bg">
+
+  <!-- Topbar: Back (left) | empty | CRIMSYS (right) -->
+  <nav class="navbar navbar-dark topbar">
+    <div class="container grid-topbar">
+      <div class="pos-left">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/html/login.html">← Back</a>
+      </div>
+      <div class="pos-center"></div>
+      <div class="pos-right">
+        <a class="brand-logo" href="/Crimsys/">CRIMSYS</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+
+    <!-- Cop header (auto-filled via JS) -->
+    <div class="glass-card cop-header mb-4">
+      <img id="copPhoto" class="cop-photo" src="/Crimsys/img/cops/_placeholder.png" alt="Cop Photo">
+      <div class="cop-main flex-grow-1">
+        <h4 id="copName">— COP NAME —</h4>
+        <div class="cop-meta">
+          ID: <span id="copId">—</span>
+          • Rank: <span id="copRank">—</span>
+          • Badge: <span id="copBadge">—</span>
+          • Station: <span id="copStation">—</span>
+        </div>
+      </div>
+      <div class="status-pill pill-green" id="copStatus">Active</div>
+    </div>
+
+    <!-- Greeting -->
+    <div class="text-center mb-3">
+      <h5 class="text-white fw-bold mb-0">Choose an Action</h5>
+      <small class="text-white-50">Search, file FIRs, manage profiles, watchlist & more</small>
+    </div>
+
+    <!-- Tiles -->
+    <div class="cop-tiles">
+      <div class="row g-3">
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_search_criminal.html">
+            <div class="tile">
+              <div class="title">Search Records</div>
+              <div class="sub">Find by NID or name – open full profiles</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_criminal_create.html">
+            <div class="tile">
+              <div class="title">Add Criminal</div>
+              <div class="sub">Create profile with photo & identity details</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_criminal_manage.html">
+            <div class="tile">
+              <div class="title">Manage Profiles</div>
+              <div class="sub">Update identity, addresses, and photos</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_criminal_history.html">
+            <div class="tile">
+              <div class="title">Criminal History</div>
+              <div class="sub">Past incidents, status & linked FIRs</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_punishments.html">
+            <div class="tile">
+              <div class="title">Punishments</div>
+              <div class="sub">Judgments, durations & served status</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_fir_new.html">
+            <div class="tile">
+              <div class="title">File New FIR</div>
+              <div class="sub">Register an incident & start investigation</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_fir_list.html">
+            <div class="tile">
+              <div class="title">FIR List</div>
+              <div class="sub">Browse, filter, print & export FIRs</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_watchlist.html">
+            <div class="tile">
+              <div class="title">Watchlist</div>
+              <div class="sub">Add, monitor & review suspects</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_zone_analysis.html">
+            <div class="tile">
+              <div class="title">Zone Analysis</div>
+              <div class="sub">Hotspots, frequency & trend charts</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_timeline.html">
+            <div class="tile">
+              <div class="title">Timeline View</div>
+              <div class="sub">Full legal path across cases</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_suspect_identifier.html">
+            <div class="tile">
+              <div class="title">Smart Suspect</div>
+              <div class="sub">Find likely suspects from partial data</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+          <a class="tile-link" href="/Crimsys/html/cop_profile.html">
+            <div class="tile">
+              <div class="title">My Profile</div>
+              <div class="sub">Photo, station info & change password</div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+      <div class="d-flex flex-wrap gap-2 mt-4 justify-content-end">
+        <a class="btn btn-outline-accent btn-sm" href="/Crimsys/api/admin_logout.php?go=/Crimsys/index.php">Logout</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/Crimsys/js/cop_home.js"></script>
+</body>
+</html>
