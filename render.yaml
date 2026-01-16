@@ -3,6 +3,7 @@ services:
     name: crimsys
     env: php
     plan: free
+    rootDir: .
     buildCommand: composer install
     startCommand: php -S 0.0.0.0:8000
     envVars:
